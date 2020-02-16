@@ -7,11 +7,9 @@ import VueAxios from 'vue-axios';
 import { Icon } from 'leaflet';
 import App from './App.vue';
 import router from './router';
-import utils from './utils';
 import 'leaflet/dist/leaflet.css';
 
 
-Vue.prototype.$utils = utils;
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 delete Icon.Default.prototype._getIconUrl;

@@ -15,10 +15,14 @@
                 {{ item.properties.name }}
               </div>
               <div class="conten">
-                <div>{{ item.properties.address }}</div>
-                <div>{{ item.properties.service_note }}</div>
-                <div>{{ item.properties.phone }}</div>
-                <div class="update">{{ item.properties.updated }}</div>
+                <div class="conten-text">{{ item.properties.address }}</div>
+                <div class="conten-text">
+                  營業時間 | {{ item.properties.service_note || "無資訊，請致電詢問" }}
+                </div>
+                <div class="conten-text">聯絡電話 | {{ item.properties.phone }}</div>
+                <div class="update conten-text">
+                  資訊更新於 {{ item.properties.updated || "無資訊，請致電詢問" }}
+                </div>
               </div>
               <div class="masks">
                 <div class="mask adult">成人口罩 {{ item.properties.mask_adult }}個</div>
@@ -99,13 +103,12 @@ export default {
 }
 
 .popup-group {
-  width: 247px;
-  height: 219px;
+  // display: flex inline-flex;
   background: #FFFFFF 0% 0% no-repeat padding-box;
   .popup-title {
     // height: 21px;
     text-align: left;
-    font: Bold 16px/21px Roboto;
+    font: Bold 16px/21px 'Noto Sans TC';
     letter-spacing: 0;
     color: #333333;
     opacity: 1;
@@ -118,8 +121,11 @@ export default {
     letter-spacing: 0;
     color: #666666;
     opacity: 1;
+    .conten-text {
+      margin: 5px 0;
+    }
     .update {
-      font: Regular 12px/16px Roboto;
+      font: 12px/16px 'Roboto';
       letter-spacing: 0;
       color: #CCCCCC;
       opacity: 1;
@@ -127,32 +133,42 @@ export default {
   }
 
   .masks {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
     .mask {
-      display: flex;
-      width: 109px;
-      height: 35px;
-      background: #FFD888 0% 0% no-repeat padding-box;
+      width: 115px;
+      height: 18px;
+      padding: 10px 2px;
       border-radius: 10px;
-      opacity: 0.2;
     }
-
     .adult {
-        text-align: left;
-        font: Regular 19px Roboto;
-        letter-spacing: 0;
-        color: #FF973B;
-        opacity: 1;
-      }
+      text-align: center;
+      font: 14px/19px Roboto;
+      color: rgb(255, 151, 59);
+      background: rgb(255, 151, 59, 0.2) 0% 0% no-repeat padding-box;
+      opacity: 1;
+    }
+    .child {
+      text-align: center;
+      font: 14px/19px Roboto;
+      color: #F8BE00;
+      background: #FFDB4D33 0% 0% no-repeat padding-box;
+      opacity: 1;
+    }
   }
   .gotogooglemap {
+    text-align: center;
+    margin: 5px 0;
+    padding: 10px 0;
     a {
-      padding: 20px 50px;
+      padding: 10px 72px;
+      border-radius: 10px;
+      background: #68AF87 0% 0% no-repeat padding-box;
       text-decoration: none;
       font: 14px/19px Roboto;
       letter-spacing: 0;
       color: #FFFFFF;
-      background: #68AF87 0% 0% no-repeat padding-box;
-      border-radius: 10px;
       opacity: 1;
     }
   }
