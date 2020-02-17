@@ -79,13 +79,19 @@ export default {
       const maskAPI = 'https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json';
       vm.$http.get(maskAPI).then((response) => {
         vm.maskData = response.data.features;
+        // console.log(vm.maskData);
       }).catch((error) => error);
     },
   },
   computed: {
     masksFliter() {
       const vm = this;
-      return vm.maskData.filter((item) => item.properties.name.includes(vm.inputValue));
+      function search(data, input) {
+        const prop = data.properties;
+        return prop.name.includes(input)
+        || prop.address.includes(input) || prop.cunli.includes(input);
+      }
+      return vm.maskData.filter((item) => search(item, vm.inputValue));
     },
   },
 };
