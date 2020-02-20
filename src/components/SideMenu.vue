@@ -18,7 +18,8 @@
       </div>
     </div>
     <div class="results-box">
-      <div v-for="(item, index) in masksFliter" :key="index" class="results">
+      <div v-for="(item, index) in masksFliter" :key="index" class="results"
+      @click="setViewPosition(item.geometry.coordinates.slice().reverse())">
         <div :class="(item.properties.mask_adult + item.properties.mask_child) > 100
           ? 'mark-orange' : 'mark-red'"></div>
         <div class="title">{{ item.properties.name }}</div>
@@ -82,6 +83,10 @@ export default {
         // console.log(vm.maskData);
       }).catch((error) => error);
     },
+    setViewPosition(position) {
+      this.$bus.$emit('setPosition', position);
+      // console.log('sideMenu', position);
+    },
   },
   computed: {
     masksFliter() {
@@ -100,9 +105,6 @@ export default {
 <style lang="scss">
 
 .menu {
-  position: absolute;
-  left: 0px;
-  top: 0px;
   width: 315px;
   height: 100vh;
   .menu-title {
@@ -192,7 +194,7 @@ export default {
   }
 
   .results-box {
-    height: calc(100vh - 260px);
+    height: calc(100vh - 262px);
     overflow-y: auto;
     .results {
       border-bottom: .5px solid #00000029;

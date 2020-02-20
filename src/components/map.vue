@@ -1,9 +1,9 @@
 <template>
   <div id="map">
-    <l-map :zoom="zoom" :center="pos">
+    <l-map :zoom="zoom" :center="viewPos">
       <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"></l-tile-layer>
-      <l-marker :lat-lng="pos" >
+      <l-marker :lat-lng="yourPos" >
         <l-popup><span>You are here</span></l-popup>
       </l-marker>
       <v-marker-cluster>
@@ -29,9 +29,8 @@
                 <div class="mask child">兒童口罩 {{ item.properties.mask_child }}個</div>
               </div>
               <div class="gotogooglemap">
-                <a :href="googleLinkHandler(pos, item)" target="_blank">Google 路線導航</a>
+                <a :href="googleLinkHandler(yourPos, item)" target="_blank">Google 路線導航</a>
               </div>
-
             </div>
           </l-popup>
         </l-marker>
@@ -58,21 +57,26 @@ export default {
   data() {
     return {
       map: null,
-      pos: [23.840123, 120.963436],
+      yourPos: [23.840123, 120.963436],
+      viewPos: [23.840123, 120.963436],
       zoom: 15,
       maskData: [],
     };
   },
   created() {
-    this.getViewPostion();
+    this.getYourPostion();
     this.getMaskData();
   },
+  mounted() {
+    this.setViewPosition();
+  },
   methods: {
-    getViewPostion() {
+    getYourPostion() {
       const vm = this;
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          vm.pos = [position.coords.latitude, position.coords.longitude];
+          vm.viewPos = [position.coords.latitude, position.coords.longitude];
+          vm.yourPos = [position.coords.latitude, position.coords.longitude];
         },
       );
     },
@@ -82,6 +86,13 @@ export default {
       vm.$http.get(maskAPI).then((response) => {
         vm.maskData = response.data.features;
       }).catch((error) => error);
+    },
+    setViewPosition() {
+      this.$bus.$on('setPosition', (position) => {
+        this.viewPos = position;
+        this.zoom = 30;
+        // console.log('map', this.viewPos);
+      });
     },
     googleLinkHandler(aPoint, bPoint) {
       return `https://www.google.com.tw/maps/dir/${aPoint.join(',')}/${bPoint.geometry.coordinates.slice().reverse().join(',')}/`;
