@@ -24,11 +24,5 @@ export default {
       viewPosition: [],
     };
   },
-  // methods: {
-  //   setViewPosition(position) {
-  //     this.viewPosition = position;
-  //     console.log('Home', this.viewPosition);
-  //   },
-  // },
 };
 </script>
