@@ -3,12 +3,13 @@
     <l-map :zoom="zoom" :center="viewPos">
       <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"></l-tile-layer>
-      <l-marker :lat-lng="yourPos" >
+      <l-marker :lat-lng="yourPos" :icon="icon">
         <l-popup><span>You are here</span></l-popup>
       </l-marker>
       <v-marker-cluster>
         <l-marker v-for="(item, index) in maskData" :key="index"
-        :lat-lng="item.geometry.coordinates.slice().reverse()">
+        :lat-lng="item.geometry.coordinates.slice().reverse()"
+        :icon="setIcon(item)">
           <l-popup>
             <div class="popup-group">
               <div class="popup-title">
@@ -44,6 +45,10 @@ import {
   LMap, LTileLayer, LMarker, LPopup,
 } from 'vue2-leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster';
+import L from 'leaflet';
+import iconGreen from '../assets/Icon_location_green.svg';
+import iconOrange from '../assets/Icon_location_orange.svg';
+import iconRed from '../assets/Icon_location_red.svg';
 
 export default {
   // name: 'map',
@@ -61,6 +66,12 @@ export default {
       viewPos: [23.840123, 120.963436],
       zoom: 15,
       maskData: [],
+      icon: new L.Icon({
+        iconUrl: iconGreen,
+        iconSize: [96, 104],
+        iconAnchor: [36, 67],
+        popupAnchor: [1, -34],
+      }),
     };
   },
   created() {
@@ -96,6 +107,19 @@ export default {
     },
     googleLinkHandler(aPoint, bPoint) {
       return `https://www.google.com.tw/maps/dir/${aPoint.join(',')}/${bPoint.geometry.coordinates.slice().reverse().join(',')}/`;
+    },
+    setIcon(item) {
+      const icon = new L.Icon({
+        iconUrl: iconRed,
+        iconSize: [96, 104],
+        iconAnchor: [36, 67],
+        popupAnchor: [1, -34],
+      });
+      if (item.properties.mask_adult + item.properties.mask_child > 100) {
+        icon.options.iconUrl = iconOrange;
+        return icon;
+      }
+      return icon;
     },
   },
 };
