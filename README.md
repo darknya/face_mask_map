@@ -1,5 +1,5 @@
 # facemaskmap
-
+[DEMO](https://darknya.github.io/face_mask_map/dist/#/)
 ## Project setup
 ```
 npm install
