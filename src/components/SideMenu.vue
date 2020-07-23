@@ -45,7 +45,6 @@
 export default {
   data() {
     return {
-      maskData: [],
       text: '',
       inputValue: '',
       date: {
@@ -56,8 +55,8 @@ export default {
       },
     };
   },
+  props: ['maskData'],
   created() {
-    this.getMaskData();
     this.getDate();
   },
   methods: {
@@ -80,7 +79,6 @@ export default {
       const maskAPI = 'https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json';
       vm.$http.get(maskAPI).then((response) => {
         vm.maskData = response.data.features;
-        // console.log(vm.maskData);
       }).catch((error) => error);
     },
     setViewPosition(position) {

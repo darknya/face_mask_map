@@ -65,7 +65,6 @@ export default {
       yourPos: [23.840123, 120.963436],
       viewPos: [23.840123, 120.963436],
       zoom: 15,
-      maskData: [],
       icon: new L.Icon({
         iconUrl: iconGreen,
         iconSize: [96, 104],
@@ -74,9 +73,11 @@ export default {
       }),
     };
   },
+  props: {
+    maskData: Array,
+  },
   created() {
     this.getYourPostion();
-    this.getMaskData();
   },
   mounted() {
     this.setViewPosition();
@@ -90,13 +91,6 @@ export default {
           vm.yourPos = [position.coords.latitude, position.coords.longitude];
         },
       );
-    },
-    getMaskData() {
-      const vm = this;
-      const maskAPI = 'https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json';
-      vm.$http.get(maskAPI).then((response) => {
-        vm.maskData = response.data.features;
-      }).catch((error) => error);
     },
     setViewPosition() {
       this.$bus.$on('setPosition', (position) => {

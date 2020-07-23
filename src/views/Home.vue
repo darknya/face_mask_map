@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <SideMenu></SideMenu>
-    <Map/>
+    <SideMenu :mask-data="maskData"></SideMenu>
+    <Map :mask-data="maskData"/>
   </div>
 </template>
 
@@ -21,8 +21,21 @@ export default {
   },
   data() {
     return {
-      viewPosition: [],
+      maskData: [],
     };
+  },
+  created() {
+    this.getMaskData();
+  },
+  methods: {
+    getMaskData() {
+      const vm = this;
+      const maskAPI = 'https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json';
+      vm.$http.get(maskAPI).then((response) => {
+        vm.maskData = response.data.features;
+        // console.log(vm.maskData);
+      }).catch((error) => error);
+    },
   },
 };
 </script>
