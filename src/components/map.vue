@@ -74,7 +74,10 @@ export default {
     };
   },
   props: {
-    maskData: Array,
+    maskData: {
+      type: Array,
+      default: undefined,
+    },
   },
   created() {
     this.getYourPostion();

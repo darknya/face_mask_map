@@ -12,9 +12,9 @@
         <img src="../assets/Icon_search.svg" alt="">
       </div>
       <div class="botton-group">
-        <div class="all-active botton">所有口罩</div>
-        <div class="adlut-active botton">成人口罩</div>
-        <div class="child-active botton">兒童口罩</div>
+        <div class="all-active botton" @click="maskType='all'">所有口罩</div>
+        <div class="adlut-active botton" @click="maskType='adult'">成人口罩</div>
+        <div class="child-active botton" @click="maskType='child'">兒童口罩</div>
       </div>
     </div>
     <div class="results-box">
@@ -47,6 +47,7 @@ export default {
     return {
       text: '',
       inputValue: '',
+      maskType: 'all',
       date: {
         year: 0,
         month: 0,
@@ -55,7 +56,12 @@ export default {
       },
     };
   },
-  props: ['maskData'],
+  props: {
+    maskData: {
+      type: Array,
+      default: undefined,
+    },
+  },
   created() {
     this.getDate();
   },
@@ -87,6 +93,11 @@ export default {
     },
   },
   computed: {
+    maskTypeFliter() {
+      const vm = this;
+      return vm.maskType === 'all' ? vm.maskData
+        : vm.maskData.filter((i) => i.properties[`mask_${vm.maskType}`] > 0);
+    },
     masksFliter() {
       const vm = this;
       function search(data, input) {
@@ -94,7 +105,7 @@ export default {
         return prop.name.includes(input)
         || prop.address.includes(input) || prop.cunli.includes(input);
       }
-      return vm.maskData.filter((item) => search(item, vm.inputValue));
+      return vm.maskTypeFliter.filter((item) => search(item, vm.inputValue));
     },
   },
 };
@@ -172,6 +183,7 @@ export default {
         padding: 9px 14px;
         border: 1px solid #CCCCCC;
         border-radius: 7px;
+        cursor: pointer;
       }
       .all-active {
         background-color: #D65600;
