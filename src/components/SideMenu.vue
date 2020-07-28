@@ -157,6 +157,7 @@ export default {
     border-bottom: .5px solid #00000029;
     .search {
       position: relative;
+      display: flex;
       .input {
         font: 16px/21px 'Noto Sans TC';
         color: #333333;
@@ -165,6 +166,7 @@ export default {
         border: 0;
         padding: 10px 52px 10px 16px;
         height: 20px;
+        width: 100%;
       }
       img {
         position: absolute;
